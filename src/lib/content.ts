@@ -29,7 +29,7 @@ export const works: Work[] = [
     year: "2026",
     note: "A father holds his daughters close: a red balloon, a gold bear, a butterfly passing through.",
     image: fathersArms,
-    accent: "#e0218a",
+    accent: "#c9a24c",
   },
   {
     slug: "keeper",
@@ -37,7 +37,7 @@ export const works: Work[] = [
     year: "2026",
     note: "Red silk, pearls and a lizard held like an heirloom against a field of lime damask.",
     image: keeper,
-    accent: "#9be22d",
+    accent: "#c9a24c",
   },
   {
     slug: "the-call",
@@ -45,7 +45,7 @@ export const works: Work[] = [
     year: "2026",
     note: "A ruffed collar, a haloed dove and an old rotary telephone waiting to ring.",
     image: theCall,
-    accent: "#ffb400",
+    accent: "#c9a24c",
   },
   {
     slug: "the-gentlemen",
@@ -53,7 +53,7 @@ export const works: Work[] = [
     year: "2026",
     note: "Twin dandies in turquoise coats and lace jabots, their heads crowned in Ankara.",
     image: gentlemen,
-    accent: "#3fd0b6",
+    accent: "#c9a24c",
   },
 ];
 
