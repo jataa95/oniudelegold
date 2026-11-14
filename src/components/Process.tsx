@@ -66,7 +66,7 @@ export default function Process() {
 
   return (
     <section className="process" id="process">
-      <div className="process__panel" ref={panel}>
+      <div className="process__panel" ref={panel} data-theme="light">
         <ChapterBar label="Process" n="03" dark />
         <h2 className="display process__title">
           From line <br />

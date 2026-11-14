@@ -2,7 +2,7 @@ import { artist } from "@/lib/content";
 
 export default function Footer() {
   return (
-    <footer className="footer" id="enquire">
+    <footer className="footer" id="enquire" data-theme="light">
       <p className="eyebrow">Collect · Commission · Visit</p>
       <h2 className="footer__title">
         Sit for <em>a portrait.</em>

@@ -14,7 +14,7 @@ const sans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Oniudele Gold — Artistic Expressions",
+  title: "Oniudele Gold — Veiled, not hidden",
   description:
     "Veiled portraits in damask rooms. Paintings by Oniudele Gold, Lagos.",
   openGraph: {

@@ -47,8 +47,9 @@ export default function Hero() {
 
   return (
     <section className="hero" id="top">
+      <p className="hero__kicker">Oniudele Gold · Artistic Expressions</p>
       <h1 className="hero__title">
-        <span>Artistic</span> <span>Expressions</span>
+        <span>Veiled,</span> <span>not hidden.</span>
       </h1>
       <div className="hero__stage" aria-hidden>
         <div className="hero__ring" ref={ring}>
