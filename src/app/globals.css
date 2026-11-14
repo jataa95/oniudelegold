@@ -1,5 +1,6 @@
 :root {
   --bg: #0b0a08;
+  --bg-warm: #17130d;
   --ink: #f6f0e3;
   --mute: #9b927f;
   --paper: #f3ecdc;
@@ -113,29 +114,41 @@ img { display: block; max-width: 100%; height: auto; }
 .menu__foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: auto; padding-top: 32px; font-size: 14px; color: var(--mute); }
 .menu__foot a { color: var(--gold); }
 
-/* 3D logo */
-.logo3d { --rx: -6deg; --ry: 8deg; --dx: -0.3; --dy: -0.3; display: inline-block; perspective: 600px; font-family: var(--display); line-height: 1; letter-spacing: -0.035em; user-select: none; }
+/* 3D logo: a real solid (face, sliced sides, back) spun by scroll */
+.logo3d {
+  --rx: -6deg; --ry: 10deg; --spin: 0deg; --sheen: 0%;
+  --depth: 0.2em; /* total thickness */
+  display: inline-block; perspective: 14em;
+  font-family: var(--display); line-height: 1; letter-spacing: -0.035em; user-select: none;
+}
 .logo3d--md { font-size: 30px; }
-.logo3d--xl { font-size: 15.6vw; }
-.logo3d__body { position: relative; display: inline-block; transform-style: preserve-3d; transform: rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .2s linear; }
+.logo3d--xl { font-size: 15.6vw; --depth: 0.07em; perspective: 26em; }
+.logo3d__body {
+  position: relative; display: inline-block; transform-style: preserve-3d;
+  transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--spin)));
+}
 .logo3d b { font-style: italic; font-weight: 400; margin-left: 0.02em; }
-.logo3d__layer, .logo3d__face { display: block; white-space: nowrap; }
+.logo3d__layer, .logo3d__face, .logo3d__back, .logo3d__shadow { display: block; white-space: nowrap; }
+.logo3d__layer, .logo3d__back, .logo3d__shadow { position: absolute; inset: 0; }
+/* sides: thin slices stepped back in Z, darkening toward the rear */
 .logo3d__layer {
-  position: absolute; inset: 0;
-  color: color-mix(in oklab, var(--ext), var(--ext-end) calc(var(--i) * 11%));
-  transform: translate(calc(var(--dx) * var(--i) * 0.022em), calc((0.6 + var(--dy) * 0.4) * var(--i) * 0.022em)) translateZ(calc(var(--i) * -1px));
+  color: color-mix(in oklab, var(--ext), var(--ext-end) calc(var(--i) * 6%));
+  transform: translateZ(calc(var(--depth) * var(--i) / -14));
   transition: color .5s;
 }
-.logo3d__layer:last-of-type { filter: drop-shadow(0 0.12em 0.18em #0006); }
-.logo3d__face { position: relative; color: var(--face); transition: color .5s; text-shadow: 0 0 0.6em var(--glow); }
-.logo3d__face b {
-  background: linear-gradient(170deg, var(--gold-a) 10%, var(--gold-b) 45%, var(--gold-c) 60%, var(--gold-a) 85%);
-  background-size: 100% 200%;
+.logo3d__face, .logo3d__back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.logo3d__face { position: relative; color: var(--face); transition: color .5s; transform: translateZ(0.5px); }
+/* back face: flipped so the word still reads correctly mid-turn */
+.logo3d__back { color: var(--face); transform: translateZ(calc(var(--depth) * -1 - 0.5px)) rotateY(180deg); }
+.logo3d__face b, .logo3d__back b {
+  background: linear-gradient(110deg, var(--gold-c) 0%, var(--gold-b) 25%, var(--gold-a) 42%, #fff6dc 50%, var(--gold-a) 58%, var(--gold-b) 75%, var(--gold-c) 100%);
+  background-size: 300% 100%;
+  background-position: var(--sheen) 0;
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  text-shadow: none;
-  animation: sheen 6s ease-in-out infinite;
 }
-@keyframes sheen { 50% { background-position: 0 100%; } }
+/* soft cast shadow on the ground behind */
+.logo3d__shadow { color: transparent; text-shadow: 0 0.18em 0.25em #0007; transform: translateZ(calc(var(--depth) * -1.2)); }
+[data-theme="light"] .logo3d__shadow, .header[data-ground="light"] .logo3d__shadow { text-shadow: 0 0.18em 0.25em #5c430f33; }
 
 /* hero */
 .hero {
@@ -172,7 +185,7 @@ img { display: block; max-width: 100%; height: auto; }
 /* the page slides up over the pinned hero */
 .cover {
   position: relative; z-index: 1;
-  background: var(--bg);
+  background: var(--bg-warm);
   border-radius: 28px 28px 0 0;
   box-shadow: 0 -30px 80px #000c, inset 0 1px 0 #c9a24c40;
   padding-top: 12px;
