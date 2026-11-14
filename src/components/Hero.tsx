@@ -14,6 +14,7 @@ const cards: Card[] = [
 
 export default function Hero() {
   const ring = useRef<HTMLDivElement>(null);
+  const hero = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const el = ring.current;
@@ -34,6 +35,13 @@ export default function Hero() {
       tx += (mx - tx) * 0.05;
       ty += (my - ty) * 0.05;
       const s = Math.min(window.scrollY / window.innerHeight, 1.2);
+      // once the next section has fully covered the hero, stop animating it
+      if (s >= 1.2 && window.scrollY > window.innerHeight * 1.3) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      const c = Math.min(s, 1);
+      hero.current?.style.setProperty("--cover", String(c));
       el.style.transform = `translateY(${s * -12}vh) rotateX(${-6 + ty * -10 + s * 18}deg) rotateY(${angle + tx * 30 + s * 60}deg)`;
       raf = requestAnimationFrame(tick);
     };
@@ -46,7 +54,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="hero" id="top">
+    <section className="hero" id="top" ref={hero}>
       <p className="hero__kicker">Oniudele Gold · Artistic Expressions</p>
       <h1 className="hero__title">
         <span>Veiled,</span> <span>not hidden.</span>

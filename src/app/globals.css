@@ -138,7 +138,14 @@ img { display: block; max-width: 100%; height: auto; }
 @keyframes sheen { 50% { background-position: 0 100%; } }
 
 /* hero */
-.hero { position: relative; height: 100svh; min-height: 640px; overflow: hidden; perspective: 1400px; }
+.hero {
+  --cover: 0;
+  position: sticky; top: 0; z-index: 0;
+  transform: scale(calc(1 - var(--cover) * 0.08));
+  filter: brightness(calc(1 - var(--cover) * 0.65));
+  transform-origin: 50% 0;
+}
+.hero { height: 100svh; min-height: 640px; overflow: hidden; perspective: 1400px; }
 .hero__kicker { position: absolute; z-index: 3; left: 0; right: 0; top: calc(13vh - 8px); text-align: center; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
 .hero__title {
   position: absolute; z-index: 3; left: 0; right: 0; top: calc(13vh + 24px);
@@ -161,6 +168,15 @@ img { display: block; max-width: 100%; height: auto; }
 .hero__card img { transition: filter .4s; }
 .hero__scroll { position: absolute; z-index: 3; bottom: 64px; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--mute); letter-spacing: .12em; text-transform: uppercase; animation: bob 2.4s ease-in-out infinite; }
 @keyframes bob { 50% { transform: translateY(6px); opacity: .5; } }
+
+/* the page slides up over the pinned hero */
+.cover {
+  position: relative; z-index: 1;
+  background: var(--bg);
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -30px 80px #000c, inset 0 1px 0 #c9a24c40;
+  padding-top: 12px;
+}
 
 /* chapter bar */
 .chapterbar { display: flex; justify-content: space-between; padding: 16px var(--pad); font-size: 14px; font-weight: 500; }

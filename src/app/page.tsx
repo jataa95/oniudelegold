@@ -14,15 +14,17 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <ChapterBar label="The Veil" n="01" />
-        <Statement />
-        <ChapterBar label="Works" n="02" />
-        <Gallery />
-        <Process />
-        <ChapterBar label="Motifs" n="04" />
-        <Motifs />
-        <ChapterBar label="Studio" n="05" />
-        <Studio />
+        <div className="cover">
+          <ChapterBar label="The Veil" n="01" />
+          <Statement />
+          <ChapterBar label="Works" n="02" />
+          <Gallery />
+          <Process />
+          <ChapterBar label="Motifs" n="04" />
+          <Motifs />
+          <ChapterBar label="Studio" n="05" />
+          <Studio />
+        </div>
       </main>
       <Footer />
     </>
