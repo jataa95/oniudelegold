@@ -6,13 +6,11 @@ const LAYERS = 14;
 
 /**
  * 3D "oniudelegold" wordmark built as a real solid: a front face, a stack of
- * slices for the sides and a readable back face.
+ * slices for the sides and a back face.
  *
- * Header size: scrolling spins it around its vertical axis on a spring. It
- * turns with the scroll's speed and direction, then glides on to the next
- * full turn and settles facing front.
- * Footer size: it makes one full turn as it rises into view.
- * The pointer adds a gentle tilt on top of both.
+ * Motion is deliberately quiet. Scrolling makes it lean a few degrees in the
+ * direction of travel and lets a band of light glide across the gold; when
+ * the page stops it eases back to rest. The pointer adds a gentle tilt.
  */
 export default function Logo({ size = "md" }: { size?: "md" | "xl" }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -22,17 +20,12 @@ export default function Logo({ size = "md" }: { size?: "md" | "xl" }) {
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const tiltK = size === "xl" ? 0.35 : 1;
-    // degrees of spin per pixel scrolled: one full turn every ~1100px
-    const spinK = 0.33;
-
+    const k = size === "xl" ? 0.4 : 1;
     let raf = 0;
     let px = 0.3, py = 0.3; // pointer target
     let x = px, y = py; // pointer smoothed
-    let target = 0; // spin target (deg)
-    let angle = 0; // spin shown (deg)
-    let vel = 0;
-    let dir = 1;
+    let leanT = 0, lean = 0, leanV = 0; // scroll lean (deg)
+    let sheenT = 0, sheen = 0; // light position (%)
     let lastY = window.scrollY;
     let idle: ReturnType<typeof setTimeout> | undefined;
 
@@ -41,27 +34,16 @@ export default function Logo({ size = "md" }: { size?: "md" | "xl" }) {
     };
 
     const onScroll = () => {
-      if (size === "xl") {
-        // footer: one full turn while rising into view, landing face-on once fully visible
-        const r = el.getBoundingClientRect();
-        const vh = window.innerHeight;
-        const atEnd = window.scrollY + vh >= document.documentElement.scrollHeight - 4;
-        const p = atEnd ? 1 : Math.max(0, Math.min(1, (vh - r.top) / (r.height + 40)));
-        target = -360 * Math.pow(1 - p, 2);
-        wake();
-        return;
-      }
       const d = window.scrollY - lastY;
       lastY = window.scrollY;
       if (!d) return;
-      dir = Math.sign(d);
-      target += Math.max(-40, Math.min(40, d * spinK));
+      leanT = Math.max(-9, Math.min(9, d * 0.35)) * k;
+      sheenT += d * 0.06;
       clearTimeout(idle);
-      // when the scrolling stops, carry on to the next full turn and rest facing front
       idle = setTimeout(() => {
-        target = (dir > 0 ? Math.ceil(target / 360) : Math.floor(target / 360)) * 360;
+        leanT = 0;
         wake();
-      }, 140);
+      }, 90);
       wake();
     };
 
@@ -73,28 +55,29 @@ export default function Logo({ size = "md" }: { size?: "md" | "xl" }) {
     };
 
     const tick = () => {
-      // critically-damped-ish spring for the spin: weighty start, soft landing
-      vel += (target - angle) * 0.03;
-      vel *= 0.7;
-      angle += vel;
-      x += (px - x) * 0.1;
-      y += (py - y) * 0.1;
+      // soft, well-damped spring: no overshoot, slow settle
+      leanV += (leanT - lean) * 0.06;
+      leanV *= 0.72;
+      lean += leanV;
+      sheen += (sheenT - sheen) * 0.06;
+      x += (px - x) * 0.08;
+      y += (py - y) * 0.08;
 
-      const turn = ((angle % 360) + 360) % 360;
-      el.style.setProperty("--spin", `${angle.toFixed(2)}deg`);
-      el.style.setProperty("--rx", `${(-y * 14 * tiltK - 6).toFixed(2)}deg`);
-      el.style.setProperty("--ry", `${(x * 18 * tiltK + 10).toFixed(2)}deg`);
-      // light sweeps across the gold as it turns
-      el.style.setProperty("--sheen", `${((turn / 360) * 200 + x * 20).toFixed(1)}%`);
+      el.style.setProperty("--rx", `${(-y * 10 * k - 6 + lean).toFixed(2)}deg`);
+      el.style.setProperty("--ry", `${(x * 14 * k + 10 - lean * 0.5).toFixed(2)}deg`);
+      el.style.setProperty("--spin", "0deg");
+      el.style.setProperty("--sheen", `${(((sheen + x * 20) % 300) + 300) % 300 / 1.5}%`);
 
       const moving =
-        Math.abs(target - angle) > 0.05 || Math.abs(vel) > 0.05 || Math.abs(px - x) + Math.abs(py - y) > 0.002;
+        Math.abs(leanT - lean) > 0.02 ||
+        Math.abs(leanV) > 0.02 ||
+        Math.abs(sheenT - sheen) > 0.1 ||
+        Math.abs(px - x) + Math.abs(py - y) > 0.002;
       raf = moving ? requestAnimationFrame(tick) : 0;
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onMove);
-    if (size === "xl") onScroll();
     return () => {
       cancelAnimationFrame(raf);
       clearTimeout(idle);

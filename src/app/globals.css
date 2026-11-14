@@ -14,7 +14,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: clip; }
 body {
   background: var(--bg);
   color: var(--ink);
@@ -233,7 +233,7 @@ img { display: block; max-width: 100%; height: auto; }
 .lightbox__close { position: fixed; top: 20px; right: 20px; }
 
 /* process */
-.process { padding: 10vh var(--pad) 18vh; }
+.process { padding: 10vh var(--pad) 18vh; overflow-x: clip; }
 .process__panel {
   background: var(--paper); color: #111; border-radius: 24px;
   padding: 24px clamp(20px, 4vw, 64px) clamp(32px, 6vw, 80px);
@@ -276,7 +276,7 @@ img { display: block; max-width: 100%; height: auto; }
 .motifs__tabs button.is-on { background: var(--gold); color: #0b0a08; box-shadow: none; }
 
 /* studio */
-.studio { display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(24px, 5vw, 80px); padding: 6vh var(--pad) 20vh; align-items: center; }
+.studio { overflow-x: clip; display: grid; grid-template-columns: 1.4fr 1fr; gap: clamp(24px, 5vw, 80px); padding: 6vh var(--pad) 20vh; align-items: center; }
 .studio__img { border-radius: 20px; overflow: hidden; transform: rotate(-2deg); }
 .studio__img img { width: 100%; }
 .studio__copy h2 { font-size: clamp(48px, 6vw, 100px); margin-bottom: 32px; }
