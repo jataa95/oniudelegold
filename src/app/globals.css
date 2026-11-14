@@ -75,12 +75,19 @@ img { display: block; max-width: 100%; height: auto; }
 .header > a, .header > button { pointer-events: auto; position: relative; z-index: 2; }
 .wordmark { display: inline-flex; }
 
-.burger { width: 48px; height: 48px; border-radius: 999px; display: grid; place-content: center; gap: 7px; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
-.burger:hover { transform: rotate(-6deg); }
-.burger span { display: block; width: 26px; height: 2px; border-radius: 2px; background: var(--h-ink); transition: transform .45s cubic-bezier(.7,0,.2,1), background .5s; }
-.burger span:last-child { width: 18px; margin-left: auto; background: var(--gold-b); }
-.header[data-open="true"] .burger span:first-child { transform: translateY(4.5px) rotate(45deg); }
-.header[data-open="true"] .burger span:last-child { width: 26px; transform: translateY(-4.5px) rotate(-45deg); }
+.burger { display: inline-flex; align-items: center; gap: 14px; height: 48px; padding: 0 4px 0 0; color: var(--h-ink); transition: color .5s; }
+.burger__label { position: relative; display: block; height: 1.2em; overflow: hidden; font-family: var(--display); font-size: 20px; line-height: 1.2; letter-spacing: 0.02em; text-transform: uppercase; }
+.burger__label span { display: block; transition: transform .5s cubic-bezier(.7,0,.2,1); }
+.burger__label span:last-child { position: absolute; left: 0; top: 0; transform: translateY(100%); font-style: italic; text-transform: none; color: var(--gold-b); }
+.header[data-open="true"] .burger__label span:first-child { transform: translateY(-100%); }
+.header[data-open="true"] .burger__label span:last-child { transform: none; }
+.burger__icon { display: grid; gap: 7px; width: 26px; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+.burger:hover .burger__icon { transform: rotate(-6deg); }
+.burger:hover .burger__label span:first-child { color: var(--gold-b); }
+.burger__icon i { display: block; width: 26px; height: 2px; border-radius: 2px; background: var(--h-ink); transition: transform .45s cubic-bezier(.7,0,.2,1), width .45s, background .5s; }
+.burger__icon i:last-child { width: 18px; margin-left: auto; background: var(--gold-b); }
+.header[data-open="true"] .burger__icon i:first-child { transform: translateY(4.5px) rotate(45deg); }
+.header[data-open="true"] .burger__icon i:last-child { width: 26px; transform: translateY(-4.5px) rotate(-45deg); }
 
 .menu {
   position: fixed; inset: 0; z-index: 1;

@@ -63,8 +63,14 @@ export default function Header() {
         aria-controls="site-menu"
         onClick={() => setOpen((o) => !o)}
       >
-        <span />
-        <span />
+        <span className="burger__label" aria-hidden>
+          <span>Menu</span>
+          <span>Close</span>
+        </span>
+        <span className="burger__icon" aria-hidden>
+          <i />
+          <i />
+        </span>
       </button>
 
       <nav id="site-menu" className="menu" aria-hidden={!open} inert={!open}>
