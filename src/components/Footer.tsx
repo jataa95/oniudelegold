@@ -1,4 +1,5 @@
 import { artist } from "@/lib/content";
+import Logo from "./Logo";
 
 export default function Footer() {
   return (
@@ -19,6 +20,9 @@ export default function Footer() {
           View the works
         </a>
       </div>
+      <a href="#top" className="footer__logo" aria-label={`${artist.name}, back to top`}>
+        <Logo size="xl" />
+      </a>
       <div className="footer__base">
         <span>© 2026 {artist.name}</span>
         <span>{artist.city}</span>

@@ -12,6 +12,7 @@ export default function Logo({ size = "md" }: { size?: "md" | "xl" }) {
 
   useEffect(() => {
     const el = ref.current;
+    const k = size === "xl" ? 0.35 : 1;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let raf = 0;
@@ -28,8 +29,8 @@ export default function Logo({ size = "md" }: { size?: "md" | "xl" }) {
     const tick = () => {
       x += (tx - x) * 0.12;
       y += (ty - y) * 0.12;
-      el.style.setProperty("--rx", `${-y * 14}deg`);
-      el.style.setProperty("--ry", `${x * 18}deg`);
+      el.style.setProperty("--rx", `${-y * 14 * k}deg`);
+      el.style.setProperty("--ry", `${x * 18 * k}deg`);
       el.style.setProperty("--dx", `${-x}`);
       el.style.setProperty("--dy", `${-y}`);
       raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.002 ? requestAnimationFrame(tick) : 0;
@@ -39,7 +40,7 @@ export default function Logo({ size = "md" }: { size?: "md" | "xl" }) {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
     };
-  }, []);
+  }, [size]);
 
   return (
     <span className={`logo3d logo3d--${size}`} ref={ref} aria-hidden>
